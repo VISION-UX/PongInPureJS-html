@@ -1,0 +1,146 @@
+
+<html>
+    <head>
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+var paddle1 = document.createElement('div');
+paddle1.style.width = '10px';
+paddle1.style.height = '100px';
+paddle1.style.backgroundColor = 'red';
+paddle1.style.position = 'absolute';
+paddle1.style.top = '0px';
+paddle1.style.left = '0px';
+document.body.appendChild(paddle1);
+
+var paddle2 = document.createElement('div');
+paddle2.style.width = '10px';
+paddle2.style.height = '100px';
+paddle2.style.backgroundColor = 'blue';
+paddle2.style.position = 'absolute';
+paddle2.style.top = '0px';
+paddle2.style.right = '0px';
+document.body.appendChild(paddle2);
+
+document.onmousemove = function(e) {
+  paddle2.style.top = e.clientY - 50 + 'px';
+}
+
+var cube = document.createElement('div');
+cube.style.width = '10px';
+cube.style.height = '10px';
+cube.style.backgroundColor = 'black';
+cube.style.position = 'absolute';
+cube.style.top = '50%';
+cube.style.left = '50%';
+document.body.appendChild(cube);
+
+var cubeX = 1;
+var cubeY = 1;
+var cubeSpeed = 1;
+var cubeInterval = setInterval(function() {
+  cube.style.left = parseInt(cube.style.left) + cubeX * cubeSpeed + 'px';
+  cube.style.top = parseInt(cube.style.top) + cubeY * cubeSpeed + 'px';
+  if (parseInt(cube.style.left) < 0) {
+    cubeX = 1;
+  }
+  if (parseInt(cube.style.left) > window.innerWidth - 10) {
+    cubeX = -1;
+  }
+  if (parseInt(cube.style.top) < 0) {
+    cubeY = 1;
+  }
+  if (parseInt(cube.style.top) > window.innerHeight - 10) {
+    cubeY = -1;
+  }
+  if (parseInt(cube.style.left) < 10 && parseInt(cube.style.top) > parseInt(paddle1.style.top) && parseInt(cube.style.top) < parseInt(paddle1.style.top) + 100) {
+    cubeX = 1;
+  }
+  if (parseInt(cube.style.left) > window.innerWidth - 20 && parseInt(cube.style.top) > parseInt(paddle2.style.top) && parseInt(cube.style.top) < parseInt(paddle2.style.top) + 100) {
+    cubeX = -1;
+  }
+}, 10);
+
+var paddle1Interval = setInterval(function() {
+  if (parseInt(cube.style.top) > parseInt(paddle1.style.top) + 50) {
+    paddle1.style.top = parseInt(paddle1.style.top) + 1 + 'px';
+  }
+  if (parseInt(cube.style.top) < parseInt(paddle1.style.top) + 50) {
+    paddle1.style.top = parseInt(paddle1.style.top) - 1 + 'px';
+  }
+}, 10);
+
+var gameOver = function() {
+  cube.style.left = '50%';
+  cube.style.top = '50%';
+  var gameOver = document.createElement('div');
+  gameOver.innerHTML = 'Game Over!';
+  gameOver.style.position = 'absolute';
+  gameOver.style.top = '50%';
+  gameOver.style.left = '50%';
+  gameOver.style.transform = 'translate(-50%, -50%)';
+  gameOver.style.fontSize = '50px';
+  document.body.appendChild(gameOver);
+  setTimeout(function() {
+    document.body.removeChild(gameOver);
+  }, 2000);
+}
+
+var gameOverInterval = setInterval(function() {
+  if (parseInt(cube.style.left) < 0) {
+    gameOver();
+  }
+  if (parseInt(cube.style.left) > window.innerWidth - 10) {
+    gameOver();
+  }
+}, 10);
+
+var score = 0;
+var scoreInterval = setInterval(function() {
+  if (parseInt(cube.style.left) < 10 && parseInt(cube.style.top) > parseInt(paddle1.style.top) && parseInt(cube.style.top) < parseInt(paddle1.style.top) + 100) {
+    score++;
+  }
+}, 10);
+
+var scoreDisplay = document.createElement('div');
+scoreDisplay.style.position = 'absolute';
+scoreDisplay.style.top = '0px';
+scoreDisplay.style.left = '50%';
+scoreDisplay.style.transform = 'translate(-50%, 0%)';
+document.body.appendChild(scoreDisplay);
+var scoreDisplayInterval = setInterval(function() {
+  scoreDisplay.innerHTML = score;
+}, 10);
+
+var resetScoreInterval = setInterval(function() {
+  if (parseInt(cube.style.left) < 0) {
+    score = 0;
+  }
+  if (parseInt(cube.style.left) > window.innerWidth - 10) {
+    score = 0;
+  }
+}, 10);
+
+scoreDisplay.style.fontSize = '50px';
+
+scoreDisplay.style.fontFamily = 'Arial';
+
+var winInterval = setInterval(function() {
+  if (score == 100) {
+    var win = document.createElement('div');
+    win.innerHTML = 'You Win!';
+    win.style.position = 'absolute';
+    win.style.top = '50%';
+    win.style.left = '50%';
+    win.style.transform = 'translate(-50%, -50%)';
+    win.style.fontSize = '50px';
+    document.body.appendChild(win);
+    setTimeout(function() {
+      document.body.removeChild(win);
+    }, 2000);
+  }
+}, 10);
+});
+        </script>
+    </head>
+</html>
